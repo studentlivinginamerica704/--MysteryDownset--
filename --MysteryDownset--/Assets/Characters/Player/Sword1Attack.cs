@@ -4,15 +4,43 @@ using UnityEngine;
 
 public class Sword1Attack : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public Collider2D swordCollider;
+    public float damage = 3;
+    Vector2 rightAttackOffset;
+
+    private void Start()
     {
-        
+        rightAttackOffset = transform.position;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void AttackRight()
     {
-        
+        swordCollider.enabled = true;
+        transform.localPosition = rightAttackOffset;
+    }
+
+    public void AttackLeft()
+    {
+        swordCollider.enabled = true;
+        transform.localPosition = new Vector3(rightAttackOffset.x * -1, rightAttackOffset.y);
+    }
+
+    public void StopAttack()
+    {
+        swordCollider.enabled = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Enemy")
+        {
+            // Deal damage to the enemy
+            Enemy enemy = other.GetComponent<Enemy>();
+
+            if (enemy != null)
+            {
+                enemy.Health -= damage;
+            }
+        }
     }
 }
